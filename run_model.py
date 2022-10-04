@@ -12,7 +12,7 @@ def run_model(epochs:int):
     runs the model we want
     """
 
-    labels = get_labels("C:/Github/DataAcademy/data/list_attr_celeba.csv", 1000)
+    labels = get_labels("C:/Github/DataAcademy/data/list_attr_celeba.csv", 12500)
 
     train_ds = import_data(
         "C:/Github/DataAcademy/data", subset="training", labels=list(labels)
