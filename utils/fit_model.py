@@ -39,7 +39,7 @@ def fit_model(train, val, epochs, save_path):
     cnn.add(Dropout(0.25))
     cnn.add(Dense(11))
     cnn.add(Activation("sigmoid"))
-    cnn.compile(loss="binary_crossentropy", optimizer="adam", metrics=["accuracy"])
+    cnn.compile(loss="binary_focal_crossentropy", optimizer="adam", metrics=["accuracy"])
 
     cnn.fit(train, validation_data=val, epochs=epochs)
 
