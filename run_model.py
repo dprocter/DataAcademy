@@ -4,22 +4,24 @@ runs the model we want
 
 from utils.get_labels import get_labels
 from utils.import_data import import_data
-from utils.fit_model import fit_model
+from utils.fit_zfnet import fit_zfnet
+from utils.fit_modified_zfnet import fit_modified_zfnet
+from utils.fit_multihead import fit_multihead
 
 
-def run_model(epochs:int):
+def run_model(epochs:int, data_path = "C:/Github/DataAcademy/data", label_sample = 0):
     """
     runs the model we want
     """
 
-    labels = get_labels("C:/Github/DataAcademy/data/list_attr_celeba.csv", 12500)
+    labels = get_labels("C:/Github/DataAcademy/data/list_attr_celeba.csv", label_sample)
 
     train_ds = import_data(
-        "C:/Github/DataAcademy/data", subset="training", labels=list(labels)
+        data_path, subset="training", labels=list(labels)
     )
 
     val_ds = import_data(
-        "C:/Github/DataAcademy/data", subset="validation", labels=list(labels)
+        data_path, subset="validation", labels=list(labels)
     )
 
-    fit_model(train=train_ds, val=val_ds, epochs=epochs, save_path="C:/Github/DataAcademy/data/models")
+    fit_multihead(train=train_ds, val=val_ds, epochs=epochs, save_path=(f"{data_path}/models"))
