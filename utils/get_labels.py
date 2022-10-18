@@ -28,6 +28,7 @@ def get_labels(file_path: str, subset: int = 0):
                     "Wearing_Hat",
                     "Wearing_Earrings",
                     "Wearing_Necktie",
+                    "Eyeglasses"
                 ]
             ]
             .to_numpy()
@@ -49,6 +50,7 @@ def get_labels(file_path: str, subset: int = 0):
                     "Wearing_Hat",
                     "Wearing_Earrings",
                     "Wearing_Necktie",
+                    "Eyeglasses"
                 ]
             ]
             .to_numpy()

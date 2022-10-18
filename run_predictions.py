@@ -1,15 +1,17 @@
 """
 runs predictions on a given directory
 """
-import tensorflow as tf
+from utils.get_predictions import get_predictions
+from utils.get_labels import get_labels
+from utils.get_metrics import get_metrics
 
-from utils.import_data import import_data
 
+def run_predictions(img_dir, model_path, label_path):
 
-def run_predictions(img_dir, model_path, output_path):
+    labels = get_labels(label_path, 5000)
 
-    model = tf.keras.models.load_model(model_path)
+    preds = get_predictions(img_dir, model_path)
 
-    data = import_data(directory=img_dir, subset=None, labels=None)
+    get_metrics(labels, preds)
 
-    preds = model.predict(data)
+    return(labels, preds)
