@@ -7,10 +7,15 @@ import pandas as pd
 from utils.clear_folder import clear_folder
 from utils.resize_image_dir import resize
 from utils.get_predictions import get_predictions
+from utils.get_eigenface import get_eigenface
 
-def run_live_predictions(camera_path: str, resize_path: str, prediction_path: str, model_path: str, num_iterations = 100):
+def run_live_predictions(camera_path: str, resize_path: str, prediction_path: str, model_path: str, eigenface_path: str
+                         ,lookalike_path: str, lookalike_model_path: str
+                         , num_iterations = 100):
 
     clear_folder(prediction_path)
+    clear_folder(eigenface_path)
+    clear_folder(lookalike_path)
 
     for i in range(0,num_iterations):
 
@@ -36,5 +41,11 @@ def run_live_predictions(camera_path: str, resize_path: str, prediction_path: st
 
         out.to_csv(f"{prediction_path}predictions{i}.csv")
 
-        time.sleep(10)
+        lookalikes = get_predictions(resize_path, lookalike_model_path)
+
+        pd.DataFrame(lookalikes).to_csv(f"{lookalike_path}predictions{i}.csv")
+
+        get_eigenface(directory_in=f"{resize_path}/images_resized", directory_out=eigenface_path, iter = i)
+
+        time.sleep(5)
 
