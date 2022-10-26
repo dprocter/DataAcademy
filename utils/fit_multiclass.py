@@ -4,7 +4,7 @@ from keras import Model
 from tensorflow.keras.metrics import BinaryAccuracy, AUC
 from tensorflow.keras.callbacks import EarlyStopping
 
-def fit_multihead(train, val, epochs, save_path):
+def fit_multiclass(train, val, epochs, save_path):
 
     img_input = Input(shape = (218,178,3))
     x = ZeroPadding2D((3,3))(img_input)
@@ -26,14 +26,14 @@ def fit_multihead(train, val, epochs, save_path):
     x= Dense(1024, activation="relu")(x)
     x= Dense(1024, activation="relu")(x)
 
-    out = Dense(12, activation = "sigmoid")(x)
+    out = Dense(10178, activation = "sigmoid")(x)
 
     cnn = Model(inputs = img_input, outputs = out, name = "ZFNet")
 
-    cnn.compile(optimizer = "Adam", loss = "binary_focal_crossentropy", metrics=[BinaryAccuracy(), AUC(from_logits=True)])
+    cnn.compile(optimizer = "Adam", loss = "categorical_crossentropy")
 
-    es = EarlyStopping(patience = 5)
+    es = EarlyStopping(patience = 2)
 
     cnn.fit(train, validation_data=val, epochs=epochs, callbacks = [es])
 
-    cnn.save(f"{save_path}/fit_multihead_model.h5")
+    cnn.save(f"{save_path}/fit_multiclass_model.h5")
