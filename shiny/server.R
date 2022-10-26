@@ -13,7 +13,8 @@ library(magick)
 celeb_lookalikes_prediction_path <- "C:/Github/DataAcademy/predictions/celeb_lookalikes"
 celeb_photos_path <- "C:/Github/DataAcademy/data/Images"
 fill_in_image_path <- "C:/Github/DataAcademy/predictions/f1eba5ef0ca7b4149228a60c1fd6a5db.jpg"
-
+multialabel_prediction_path <- "C:/Github/DataAcademy/predictions/output"
+eigenface_path <- "C:/Github/DataAcademy/predictions/eigenfaces"
 
 celeb_ids<- fread("C:/Github/DataAcademy/data/identity_CelebA.csv", data.table = FALSE)
 
@@ -152,7 +153,7 @@ get_photo_5 <-function(prediction_path){
 
 server <- function(input, output) {
   
-  model_data<-reactiveFileReader(intervalMillis =  5000, session = NULL, filePath = "C:/Github/DataAcademy/predictions/output", readFunc = process_data)
+  model_data<-reactiveFileReader(intervalMillis =  5000, session = NULL, filePath = multialabel_prediction_path, readFunc = process_data)
   
   person_count <- reactive({
     nrow(model_data())
@@ -160,7 +161,7 @@ server <- function(input, output) {
   
   output$PersonCountBox <- renderValueBox({
     valueBox(
-      person_count(), "Total Guests", icon = icon("users"),
+      person_count(), h3("Total Guests", style = 'font-size:30px;color:white;'), icon = icon("users"),
       color = "blue"
     )
   })
@@ -171,7 +172,7 @@ server <- function(input, output) {
   
   output$SmilingCountBox <- renderValueBox({
     valueBox(
-      smiling_count(), "Guests Smiling", icon = icon("smile-o"),
+      smiling_count(), h3("Guests Smiling", style = 'font-size:30px;color:white;'), icon = icon("smile-o"),
       color = "red"
     )
   })
@@ -182,7 +183,7 @@ server <- function(input, output) {
   
   output$GlassesCountBox <- renderValueBox({
     valueBox(
-      glasses_count(), "Guests Wearing Glasses", icon = icon("eye"),
+      glasses_count(), h3("Guests Wearing Glasses", style = 'font-size:30px;color:white;'), icon = icon("eye"),
       color = "blue"
     )
   })
@@ -193,7 +194,7 @@ server <- function(input, output) {
   
   output$JewelleryCountBox <- renderValueBox({
     valueBox(
-     jewellery_count(), "Guests Wearing Jewellery", icon = icon("chain"),
+     jewellery_count(), h3("Guests Wearing Jewelery", style = 'font-size:30px;color:white;'), icon = icon("chain"),
       color = "red"
     )
   })
@@ -227,7 +228,7 @@ server <- function(input, output) {
   
   eigenface<-reactiveFileReader(intervalMillis =  5000
                                 , session = NULL
-                                , filePath = "C:/Github/DataAcademy/predictions/eigenfaces"
+                                , filePath = eigenface_path
                                 , readFunc = get_image)
   
   

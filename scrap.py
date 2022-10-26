@@ -20,4 +20,4 @@ run_live_predictions(camera_path = "C:/Users/dproc/Pictures/Camera Roll/"
 #############
 # this trains the multiclass classifier
 from run_multiclass_model import run_model
-run_model(1, label_sample = 100000)
+run_model(3, label_sample = 100000)

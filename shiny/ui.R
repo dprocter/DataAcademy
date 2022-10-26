@@ -8,11 +8,11 @@ require(scales)
 library(ggpol)
 
 title <- tags$a(tags$img(src = "./twitter_PMG9.png",height = 50, width = 50),
-                'Launch Party')
+                         'Launch Party')
 
 ui <- dashboardPage(
-  dashboardHeader(title = title),
-  dashboardSidebar(),
+  dashboardHeader(title = title, disable = TRUE),
+  dashboardSidebar(disable = TRUE),
   
   dashboardBody(
     fluidRow(
@@ -21,15 +21,15 @@ ui <- dashboardPage(
       valueBoxOutput("GlassesCountBox", width = 3),
       valueBoxOutput("JewelleryCountBox", width = 3))
     ,
-    box(title = "Average Face", div(imageOutput("eigenfaces_img"))),
-    box(title = "Hair Colour Distribution", plotOutput("haircolourpie")),
+    box(title = h3("The Average Data Face", style = 'font-size:40px;color:black;'), div(imageOutput("eigenfaces_img"))),
+    box(title = h3("Hair Colour Distribution", style = 'font-size:40px;color:black;'), plotOutput("haircolourpie")),
     box( splitLayout(cellWidths = c("20%", "20%","20%", "20%", "20%")
                           , plotOutput("celeb1")
                           , plotOutput("celeb2")
                      , plotOutput("celeb3")
          , plotOutput("celeb4")
          , plotOutput("celeb5"))
-                          , title = "Most common celebrity lookalikes"
+                          , title = h3("Most common celebrity lookalikes", style = 'font-size:40px;color:black;')
          , width = 12)
   )
 )
