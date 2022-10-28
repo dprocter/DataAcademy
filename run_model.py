@@ -4,8 +4,6 @@ runs the model we want
 
 from utils.get_labels import get_labels
 from utils.import_data import import_data
-from utils.fit_zfnet import fit_zfnet
-from utils.fit_modified_zfnet import fit_modified_zfnet
 from utils.fit_multihead import fit_multihead
 
 

@@ -1,0 +1,19 @@
+So the code here fits some CNNs to the celebA dataset. Nothing is done particularly well, it was all done in a rush, but hopefully it is useful.
+
+The datasets you'll need to steal are here: https://mmlab.ie.cuhk.edu.hk/projects/CelebA.html
+
+The multilabel model needs the attribution dataset. The multiclass classifier needs the image identities dataset. Both need the images
+
+The CNNs are modifications of the ZFnet architecture: https://paperswithcode.com/method/zfnet.
+This was a competition winner in 2016, so it is not cutting edge, but it does a good job on images without being too computationally complex.
+
+You don't need a beast of a machine to train these. The multilabel model runs for about 10 hours on my not too hot laptop with only 8gb memory.
+The multiclass classifer can only run on 100k images without running out of memory and crashing.
+
+The shiny folder has all of the code needed to display the shiny dashboard and allow it to update live.
+The live scoring is a bodge, run the run_live_predictions file with a lot of iterations while you take photos.
+Each iteration it will write out a new file for multilabel predictions, multiclass classifications and the eigenface.
+The most recent of them will get automatically picked up by the shiny app and displayed.
+This could be done better, but it works....
+
+Hope this is useful

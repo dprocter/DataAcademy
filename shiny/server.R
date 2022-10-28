@@ -149,11 +149,25 @@ get_photo_5 <-function(prediction_path){
   
 }
 
+colour_df<- data.frame(Hair_colour = c("Bald", "Black_Hair", "Blond_Hair", "Brown_Hair", "Gray_Hair")
+                       , plot_colour = c("bisque","black","darkgoldenrod2","chocolate4","azure4"))
 
 
 server <- function(input, output) {
   
-  model_data<-reactiveFileReader(intervalMillis =  5000, session = NULL, filePath = multialabel_prediction_path, readFunc = process_data)
+  # model_data <- reactivePoll(intervalMillis = 1000, session = NULL, 
+  #                            checkFunc = function(){
+  #                              if (file.exists(get_recent_file(multialabel_prediction_path))){
+  #                                "yes"
+  #                              } else {
+  #                                "nope"
+  #                              }
+  #                            }
+  #                            , valueFunc = function(){
+  #                              process_data(multialabel_prediction_path)
+  #                              })
+  
+  model_data<-reactiveFileReader(intervalMillis =  1000, session = NULL, filePath = multialabel_prediction_path, readFunc = process_data)
   
   person_count <- reactive({
     nrow(model_data())
@@ -167,7 +181,7 @@ server <- function(input, output) {
   })
   
   smiling_count<- reactive({
-    nrow(model_data()[model_data()$Smiling > 0.5,])
+    nrow(model_data()[model_data()$Smiling > 0.2,])
   })
   
   output$SmilingCountBox <- renderValueBox({
@@ -178,7 +192,7 @@ server <- function(input, output) {
   })
   
   glasses_count<- reactive({
-    nrow(model_data()[model_data()$Eyeglasses > 0.5,])
+    nrow(model_data()[model_data()$Eyeglasses > 0.3,])
   })
   
   output$GlassesCountBox <- renderValueBox({
@@ -189,7 +203,7 @@ server <- function(input, output) {
   })
   
   jewellery_count<-reactive({
-    nrow(model_data()[model_data()$Wearing_Earrings > 0.5 | model_data()$Wearing_Necklace > 0.5,])
+    nrow(model_data()[model_data()$Wearing_Earrings > 0.25,])
   })
   
   output$JewelleryCountBox <- renderValueBox({
@@ -205,13 +219,22 @@ server <- function(input, output) {
       count()
   })
   
+  plot_colour<-reactive({
+    filter(colour_df, Hair_colour %in% df_colour()$Hair_Colour)$plot_colour
+  })
+  
   #set colors manually
-  colors<-c("bisque","black","darkgoldenrod2","chocolate4","azure4")
+#  colors<-c("bisque","black","darkgoldenrod2","chocolate4","azure4")
+#  
+#  colour_df<- data.frame(Hair_colour = c("Bald", "Black_Hair", "Blond_Hair", "Brown_Hair", "Gray_Hair")
+#                         , plot_colour = c("bisque","black","darkgoldenrod2","chocolate4","azure4"))
+#  
+#  df_sub<- filter(colour_df, Hair_colour %in% df_colour()$Hair_Colour )
   
   output$haircolourpie <- renderPlot({
     ggplot(df_colour()) + 
       geom_parliament(aes(seats = n, fill =  Hair_Colour), color = "white") + 
-      scale_fill_manual(values = colors) +
+      scale_fill_manual(values = plot_colour()) +
       coord_fixed() + 
       theme_void()+
       theme(
@@ -226,7 +249,7 @@ server <- function(input, output) {
     
   })
   
-  eigenface<-reactiveFileReader(intervalMillis =  5000
+  eigenface<-reactiveFileReader(intervalMillis =  1000
                                 , session = NULL
                                 , filePath = eigenface_path
                                 , readFunc = get_image)
@@ -240,18 +263,18 @@ server <- function(input, output) {
   
   #################
   # pull in celebs most looked like
-  photo1<-reactiveFileReader(intervalMillis =  10000
+  photo1<-reactiveFileReader(intervalMillis =  5000
                                 , session = NULL
                                 , filePath = celeb_lookalikes_prediction_path
                                 , readFunc = get_photo_1)
   
   
-  photo2<-reactiveFileReader(intervalMillis =  10000
+  photo2<-reactiveFileReader(intervalMillis =  5000
                              , session = NULL
                              , filePath = celeb_lookalikes_prediction_path
                              , readFunc = get_photo_2)
   
-  photo3<-reactiveFileReader(intervalMillis =  10000
+  photo3<-reactiveFileReader(intervalMillis =  5000
                              , session = NULL
                              , filePath = celeb_lookalikes_prediction_path
                              , readFunc = get_photo_3)
@@ -261,7 +284,7 @@ server <- function(input, output) {
                              , filePath = celeb_lookalikes_prediction_path
                              , readFunc = get_photo_4)
   
-  photo5<-reactiveFileReader(intervalMillis =  10000
+  photo5<-reactiveFileReader(intervalMillis =  5000
                              , session = NULL
                              , filePath = celeb_lookalikes_prediction_path
                              , readFunc = get_photo_5)
