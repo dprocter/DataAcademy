@@ -1,4 +1,7 @@
-So the code here fits some CNNs to the celebA dataset. Nothing is done particularly well, it was all done in a rush, but hopefully it is useful.
+This was made as a quick R+D project to demo how you can use ML to do image analysis on the fly at our Data Academy launch event.
+Nothing is done particularly well, it was all done in a rush, but hopefully it is useful.
+
+We fit some CNNs to the celebA dataset and bodged together a way of getting those predictions live to a shiny app.
 
 The datasets you'll need to steal are here: https://mmlab.ie.cuhk.edu.hk/projects/CelebA.html
 
